@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Compras</title>
+    <style>
+        
+        span{
+            width: 5em;
+            float: left; 
+        }
+        div{
+            padding: 0.1em;
+        }
+        #botao{
+            width: 253px;
+            text-align: right;
+        }
+               
+    </style>
+</head>
+<body>
+    <h1>Lista de Compras</h1>
+    <form name="compras">
+        <div>
+            <label>
+                <span>Item:</span>
+                <input type="text" name="nome" required>
+            </label>
+        </div> 
+        <div>
+            <label>
+                <span>Quantidade:</span> 
+                <input type="number" name="quant" required>
+            </label>
+        </div>
+        <div id="botao">
+            <input  type="submit" value="Adicionar">
+        </div>
+    </form>
+    
+    <p>Produtos e suas quantidades</p> 
+    <ul></ul> 
+
+    <button id="limpar">Limpar</button>
+
+    <script>
+        document.forms.compras.addEventListener("submit",processaEnvio)
+        var lista = document.getElementsByTagName("ul")[0]
+        var limpar = document.getElementById("limpar");
+        function processaEnvio(e){
+            e.preventDefault();
+            
+            var nome = document.forms.compras.nome.value
+            var quantidade = Number(document.forms.compras.quant.value)
+           
+            var novoLi = document.createElement("li")
+            
+            novoLi.textContent = nome+" - "+quantidade
+            
+            lista.appendChild(novoLi)
+            document.forms.compras.reset();
+            document.forms.compras.nome.focus();
+            
+        }
+        limpar.addEventListener("click",function(){
+            lista.innerHTML="";
+        })
+    
+    </script>
+</body>
+</html>

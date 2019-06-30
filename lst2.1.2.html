@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Estrutura Pilha</title>
+</head>
+<body>
+    </head>
+    <body>
+        <h1>Dados em Pilha</h1>
+        <form name="dados">
+            <label>Entrada: <input type="number" id="entrada" required></label>
+            <input type="submit" id="empilhar" value="Empilhar">
+        </form>
+        
+        <p>Representação da Pilha</p>
+        <ol></ol>
+        <button id="desempilhar">Desempilhar</button>
+        
+        <script>
+            var pilha=[]
+            
+            var formulario = document.forms.dados;
+            var campoEntrada = document.getElementById("entrada")
+            var btnEmpilhar = document.getElementById("empilhar")
+            var btnDesempilhar = document.getElementById("desempilhar")
+            var lista = document.getElementsByTagName("ol")[0]
+
+            formulario.addEventListener("submit",empilhar)
+            btnDesempilhar.addEventListener("click",desempilhar)
+            function empilhar(e){
+                e.preventDefault()
+                pilha.push(campoEntrada.value)
+                atualizarPilha()
+            }
+                
+            
+            function desempilhar(){
+                pilha.splice(pilha.length-1,1)
+                atualizarPilha()
+            }
+            function atualizarPilha(){
+                lista.innerHTML=""
+                for (var i = pilha.length-1; i >= 0; i--) {
+                    var novoLi = document.createElement("li")
+                    novoLi.innerText = pilha[i]
+                    lista.appendChild(novoLi) 
+                }
+                formulario.reset()
+                formulario.entrada.focus()
+            }
+        </script>
+    
+</body>
+</html>

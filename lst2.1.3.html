@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Participantes da Excursão</title>
+    <style>  
+
+            form{
+                padding-left: 0.5em;
+                margin-left: 0.5em;
+                margin-bottom: 0.5em;
+                border: 0.1em dashed;
+                width: 14.7em;
+            }
+            
+            form>div{
+                padding: 0.1em;
+            }
+            .dados{
+                width: 12.6em;
+            }
+            .rotulo{
+                width: 3.7em;
+                float: left; 
+            }
+            
+            #botoes{
+                width: 14.4em;
+                text-align: right;
+            }
+
+            body>div{
+                margin-left: 0.5em;
+                width: 243px;
+                border: 0.1em dotted;
+            }
+            p{
+                padding-left: 0.5em;
+                font-weight: bold;
+            }        
+            
+    </style>
+</head>
+
+<body>
+        <h1>Participantes da Excursão</h1>
+        <form name="cadastro">
+    
+            <div>
+                <label>
+                    <span class="rotulo">Nome:</span>
+                    <input class="dados" type="text" name="nome" placeholder="Digite o nome aqui" required>
+                </label>
+            </div>
+    
+            <div>
+                <label>
+                    <span class="rotulo">Idade:</span>
+                    <input class="dados" type="number" name="idade" placeholder="Digite a idade aqui" min="0" required>
+                </label>
+            </div>
+    
+            <div id="botoes">
+                <input type="button" value="Excluir" name="excluir" >
+                <input type="submit" value="Inscrever" name="inscrever" >
+            </div>
+             
+        </form>
+        
+        <div>
+            <p>Adultos</p>
+            <ul id="adultos"></ul>
+            <p>Estudantes</p>
+            <ul id="estudantes"></ul>
+        </div>  
+    
+        <script>
+
+            var formulario = document.forms.cadastro;
+            var listaAdultos = document.getElementById("adultos");
+            var listaEstudantes = document.getElementById("estudantes");
+            var btnExcluir = document.forms.cadastro.excluir;
+            var btnInscrever = document.forms.cadastro.inscrever;
+            
+            btnExcluir.style.display = "none";
+            btnExcluir.addEventListener("click",excluir);
+            formulario.addEventListener("submit",addAtualizarParticipante);
+            var atualizando = 0;
+            var idUl;
+            function addAtualizarParticipante(e){
+                e.preventDefault();
+
+                if(!atualizando){ 
+                    var vNome = document.forms.cadastro.nome.value;
+                    var vIdade = document.forms.cadastro.idade.value;
+                    if(vIdade>17){
+                        var novoLi = document.createElement("li");
+                        novoLi.innerHTML = "<span class='sNome'>"+vNome+"</span> - <span class='sIdade'>"+vIdade+"</span>";
+                        novoLi.addEventListener("click",editar);
+                        listaAdultos.appendChild(novoLi); 
+                    } 
+                    else {
+                        var novoLi = document.createElement("li");
+                        novoLi.innerHTML = "<span class='sNome'>"+vNome+"</span> - <span class='sIdade'>"+vIdade+"</span>";
+                        novoLi.addEventListener("click",editar);
+                        listaEstudantes.appendChild(novoLi); 
+                        
+                    }
+                    formulario.reset();
+                    formulario.nome.focus();
+                }
+
+                else{
+                    var listaDeLi = idUl.getElementsByTagName("li");
+                    for (var i = 0; i < listaDeLi.length; i++) {
+                        if(listaDeLi[i].style.color == "red") {
+                            var vNome = document.forms.cadastro.nome.value;
+                            var vIdade = document.forms.cadastro.idade.value;
+                            listaDeLi[i].innerHTML = "<span class='sNome'>"+vNome+"</span> - <span class='sIdade'>"+vIdade+"</span>";
+                            document.forms.cadastro.idade.min="0";
+                            document.forms.cadastro.idade.max="";
+                            atualizando = 0;
+                            listaDeLi[i].style.color = "black";
+                            btnExcluir.style.display = "none";
+                            btnInscrever.value = "Inscrever";
+                            break;
+                        }
+                    }
+                    formulario.reset();
+                    formulario.nome.focus();
+                }
+                
+            }
+            
+            function editar(){
+                if(!atualizando){ 
+                    document.forms.cadastro.nome.value=this.getElementsByClassName("sNome")[0].innerText;
+                    document.forms.cadastro.idade.value=Number(this.getElementsByClassName("sIdade")[0].innerText);
+                    this.style.color="red";
+                    btnExcluir.style.display = "inline";
+                    idUl = this.parentElement
+                    
+                    if(idUl.id=="adultos") document.forms.cadastro.idade.min=18;
+                    else document.forms.cadastro.idade.max=17;
+                    btnInscrever.value = "Atualizar";
+                    atualizando = 1;
+                }
+                
+            }
+            function excluir(){
+                var listaDeLi = idUl.getElementsByTagName("li");
+                for (var i = 0; i < listaDeLi.length; i++) {
+                    if(listaDeLi[i].style.color == "red") idUl.removeChild(listaDeLi[i]);
+                }
+                btnExcluir.style.display = "none";
+                atualizando = 0;
+                document.forms.cadastro.idade.min="0";
+                document.forms.cadastro.idade.max="";
+                btnInscrever.value = "Inscrever";
+                formulario.reset();
+                formulario.nome.focus();
+            }
+        </script>
+    
+</body>
+</html>
